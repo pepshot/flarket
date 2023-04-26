@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="add_jobs_form">
+<form action="" method="post">
+    <link rel="stylesheet" type="text/css" href="{{ css }}">
+    <h1 align="center">Объявление</h1>
+    {{ form.hidden_tag() }}
+
+    <p>
+        {{ form.name_post.label }}
+        {{ form.name_post(class="form-control") }}
+        {% for error in form.name_post.errors %}
+            <p class="alert alert-danger" role="alert">
+                {{ error }}
+            </p>
+        {% endfor %}
+    </p>
+    <p>
+        {{ form.category.label }}
+        {{ form.category(class="form-control") }}
+        {% for error in form.category.errors %}
+            <p content="alert alert-danger" role="alert">
+                {{ error }}
+            </p>
+        {% endfor %}
+    </p>
+    <p>
+        {{ form.price.label }}
+        {{ form.price(class="form-control") }}
+        {% for error in form.price.errors %}
+            <p content="alert alert-danger" role="alert">
+                {{ error }}
+            </p>
+        {% endfor %}
+    </p>
+    <p>
+        {{ form.content_post.label }}
+        {{ form.content_post(class="form-control") }}
+        {% for error in form.content_post.errors %}
+            <p content="alert alert-danger" role="alert">
+                {{ error }}
+            </p>
+        {% endfor %}
+    </p>
+    <p>{{ form.is_hidden() }} {{ form.is_hidden.label }}</p>
+    {{ form.submit(type="submit", class="btn btn-outline-success") }}
+    {{message}}
+</form>
+</div>
+{% endblock %}

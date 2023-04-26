@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="{{ css }}">
+<div class="container bootstrap snippets bootdeys">
+    <div class="row">
+        <div class="col-xs-12 col-sm-9">
+            <form class="form-horizontal">
+                <div class="panel panel-default">
+                    <div id="carouselExampleIndicators" class="carousel slide">
+                        <div class="carousel-inner">
+                            <div class="carousel-item active" align="center">
+                                <img src="{{ user.url_photo }}" width="300" height="300"
+                                     class="rounded-circle" alt="к сожалению, марс не смог загрузиться :(">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="my-3">
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">Личная информация о пользователе</h4>
+                    </div>
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <p class="card-text">Имя: <strong>{{ user.name }}</strong></p>
+                            <p class="card-text">Фамилия: <strong>{{ user.surname }}</strong></p>
+                            <p class="card-text">Город проживания: <strong>{{ user.city }}</strong></p>
+                            <p class="card-text">Адрес: <strong>{{ user.address }}</strong></p>
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="my-4">
+                {% if user.is_hidden_contact_info == False or user.id == current_user.id %}
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">Контактная информация</h4>
+                    </div>
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <p class="card-text">Email: <strong>{{ user.email }}</strong></p>
+                            <p class="card-text">Номер телефона: <strong>{{ user.number_phone }}</strong></p>
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="my-4">
+
+                {% endif %}
+                <div class="panel panel-default">
+                    <div class="form-group">
+                        <div class="col-sm-10 col-sm-offset-2">
+                            <a href="/user_posts/{{ user.id }}" type="button" class="btn btn-outline-secondary me-2">
+                                {% if current_user.id == user.id %}
+                                Мои посты
+                                {% else %}
+                                Посты пользователя
+                                {% endif %}
+                            </a>
+                        </div>
+                    </div>
+                    {% if current_user.id == user.id  %}
+                        <div class="form-group">
+                            <div class="col-sm-10 col-sm-offset-2">
+                                <a href="/edit_profile/{{ user.id }}" type="button" class="btn btn-outline-warning me-2">Изменить профиль</a>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

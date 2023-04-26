@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% block content %}
+
+<link rel="stylesheet" type="text/css" href="{{ css }}">
+<div class="post album py-5 bg-body-light">
+    <div class="container">
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-1 g-3">
+            <div class="col">
+                <div class="card shadow-sm">
+                    <div align="center">
+                        {% if post.url_photo != 'None' %}
+                            <div id="carouselExampleIndicators" class="carousel slide">
+                                <div class="carousel-inner">
+                                    <div class="carousel-item active" align="center">
+                                        <img src="{{ post.url_photo }}" width="1000" height="600" alt="к сожалению, марс не смог загрузиться :(">
+                                    </div>
+                                </div>
+                            </div>
+                        {% else %}
+                            <svg class="bd-placeholder-img card-img-top" width="1000" height="600"
+                                 xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Заполнитель: Миниатюра"
+                                 preserveAspectRatio="xMidYMid slice" focusable="false">
+                                <title></title>
+                                <rect width="100%" height="100%" fill="#55595c"></rect>
+                                <text x="43%" y="50%" fill="#eceeef" dy=".3em" >Фотографии нет</text>
+                            </svg>
+                        {% endif %}
+                    </div>
+
+                    <hr class="my-4">
+
+                    <div class="card-body">
+                        <p class="card-text"><h1>{{ post.name_post }}</h1></p>
+                        <p class="card-text">
+                            <p class="card-text"><h2>Описание:</h2></p>
+                            <p class="card-text">{{ post.content_post }}</p>
+                        </p>
+                        {% if post.price %}
+                        <p class="card-text">Цена: <strong>{{ post.price }}₽</strong></p>
+                        {% else %}
+                        <p class="card-text">Цена: <strong>не указана</strong></p>
+                        {% endif %}
+                        <p class="card-text">Категория: <strong>{{ post.categories.name_category }}</strong></p>
+                        <p class="card-text">
+                            Пользователь: <a href="/profile/{{ post.author }}" class="text-decoration-light"><strong>{{ post.user.name }} {{ post.user.surname }}</strong></a>
+                        </p>
+
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                {% set hour = post.publication_date.hour %}
+                                {% set minutes = {1: '01', 2: '02', 3: '03', 4: '04',
+                                5: '05', 6: '06',  7: '07', 8: '08', 9: '09'} %}
+                                {% if post.publication_date.minute in minutes %}
+                                {% set minute = minutes[post.publication_date.minute] %}
+                                {% else %}
+                                {% set minute = post.publication_date.minute %}
+                                {% endif %}
+                                {% set day = post.publication_date.day %}
+                                {% set months = {1: 'Января', 2: 'Февраля', 3: 'Марта', 4: 'Апреля', 5: 'Мая', 6: 'Июня',
+                                7: 'Июля', 8: 'Августа', 9: 'Сентября', 10: 'Октября', 11: 'Ноября', 12: 'Декабря'} %}
+                                {% set month = months[post.publication_date.month] %}
+                                <small class="text-body-secondary">{{ day }} {{ month }} {{ hour }}:{{ minute }}</small>
+                            </div>
+                            {% set count = post.count_views %}
+                            {% if count > 0 %}
+                            <small class="text-body-secondary">{{ count - 1 }} просмотра</small>
+                            {% else %}
+                            <small class="text-body-secondary">0 просмотров</small>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

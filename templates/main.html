@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1 align="center">Объвления</h1>
+
+
+<div class="album py-5 bg-body-tertiary">
+    <div class="container">
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-2 g-3">
+
+            {% for item in posts %}
+            <div class="col">
+                <div class="card shadow-sm">
+                    {% if current_user.is_authenticated %}
+                        <a href="/post/{{ item.id }}">
+                             {% if item.url_photo != 'None' %}
+                                <div id="carouselExampleIndicators" class="carousel slide">
+                                    <div class="carousel-inner">
+                                        <div class="carousel-item active" align="center">
+                                            <img src="{{ item.url_photo }}" width="638" height="450" alt="к сожалению, марс не смог загрузиться :(">
+                                        </div>
+                                    </div>
+                                </div>
+                            {% else %}
+                                <svg class="bd-placeholder-img card-img-top" width="600" height="450" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Заполнитель: Миниатюра" preserveAspectRatio="xMidYMid slice" focusable="false">
+                                    <title></title>
+                                    <rect width="100%" height="100%" fill="#55595c"></rect>
+                                    <text x="43%" y="50%" fill="#eceeef" dy=".3em" >Фотографии нет</text>
+                                </svg>
+                            {% endif %}
+                    </a>
+                    {% else %}
+                        <a href="/login">
+                             {% if item.url_photo != 'None' %}
+                                <div id="carouselExampleIndicators" class="carousel slide">
+                                    <div class="carousel-inner">
+                                        <div class="carousel-item active" align="center">
+                                            <img src="{{ item.url_photo }}" width="638" height="450" alt="к сожалению, марс не смог загрузиться :(">
+                                        </div>
+                                    </div>
+                                </div>
+                            {% else %}
+                                <svg class="bd-placeholder-img card-img-top" width="600" height="450" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Заполнитель: Миниатюра" preserveAspectRatio="xMidYMid slice" focusable="false">
+                                    <title></title>
+                                    <rect width="100%" height="100%" fill="#55595c"></rect>
+                                    <text x="43%" y="50%" fill="#eceeef" dy=".3em" >Фотографии нет</text>
+                                </svg>
+                            {% endif %}
+                        </a>
+                    {% endif %}
+                    <div class="card-body">
+                        <p class="card-text">{{ item.name_post }}</p>
+                        {% if item.price %}
+                        <p class="card-text">Цена: <strong>{{ item.price }}₽</strong></p>
+                        {% else %}
+                        <p class="card-text">Цена: <strong>не указана</strong></p>
+                        {% endif %}
+                        <div class="d-flex justify-content-between align-items-center">
+                            {% set hour = item.publication_date.hour %}
+                            {% set minutes = {1: '01', 2: '02', 3: '03', 4: '04',
+                            5: '05', 6: '06',  7: '07', 8: '08', 9: '09'} %}
+                            {% if item.publication_date.minute in minutes %}
+                            {% set minute = minutes[item.publication_date.minute] %}
+                            {% else %}
+                            {% set minute = item.publication_date.minute %}
+                            {% endif %}
+                            {% set day = item.publication_date.day %}
+                            {% set months = {1: 'Января', 2: 'Февраля', 3: 'Марта', 4: 'Апреля', 5: 'Мая', 6: 'Июня',
+                            7: 'Июля', 8: 'Августа', 9: 'Сентября', 10: 'Октября', 11: 'Ноября', 12: 'Декабря'} %}
+                            {% set month = months[item.publication_date.month] %}
+                            <small class="text-body-secondary">{{ day }} {{ month }} {{ hour }}:{{ minute }}</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

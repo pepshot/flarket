@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="{{ css }}">
+<div class="container bootstrap snippets bootdeys">
+    <div class="row">
+        <div class="col-xs-12 col-sm-9">
+            <form class="form-horizontal" method="post" enctype="multipart/form-data">
+                {{ form.hidden_tag() }}
+                <div class="panel panel-default">
+                    <div id="carouselExampleIndicators" class="carousel slide">
+                        <div class="carousel-inner">
+                            <div class="carousel-item active" align="center">
+                                <img src="{{ url }}" width="300" height="300"
+                                     class="rounded-circle"  alt="к сожалению, марс не смог загрузиться :(">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Изменить фотографию</label><br>
+                        <label>(можно загружать файлы только с расширением '.png', '.jpg', '.jpeg')</label>
+                        <input type="file" class="form-control-file" name="file">
+                    </div>
+                </div>
+
+                <hr class="my-3">
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">Личная информация о пользователе</h4>
+                    </div>
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <p class="card-text">
+                                {{ form.name.label }}: <strong>{{ form.name(class="form-control") }}</strong>
+                                {% for error in form.name.errors %}
+                                    <p class="alert alert-danger" role="alert">
+                                        {{ error }}
+                                    </p>
+                                {% endfor %}
+                            </p>
+                            <p class="card-text">
+                                {{ form.surname.label }}: <strong>{{ form.surname(class="form-control") }}</strong>
+                                {% for error in form.surname.errors %}
+                                    <p class="alert alert-danger" role="alert">
+                                        {{ error }}
+                                    </p>
+                                {% endfor %}
+                            </p>
+                            <p class="card-text">
+                                {{ form.city.label }}: <strong>{{ form.city(class="form-control") }}</strong>
+                                {% for error in form.city.errors %}
+                                    <p class="alert alert-danger" role="alert">
+                                        {{ error }}
+                                    </p>
+                                {% endfor %}
+                            </p>
+                            <p class="card-text">
+                                {{ form.address.label }}: <strong>{{ form.address(class="form-control") }}</strong>
+                                {% for error in form.address.errors %}
+                                    <p class="alert alert-danger" role="alert">
+                                        {{ error }}
+                                    </p>
+                                {% endfor %}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="my-4">
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">Контактная информация</h4>
+                    </div>
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <p class="card-text">
+                                {{ form.number_phone.label }}: <strong>{{ form.number_phone(class="form-control") }}</strong>
+                                {% for error in form.number_phone.errors %}
+                                    <p class="alert alert-danger" role="alert">
+                                        {{ error }}
+                                    </p>
+                                {% endfor %}
+                            </p>
+                            <p>
+                                {{ form.is_hidden_contact_info() }} {{ form.is_hidden_contact_info.label }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="my-4">
+                {{ form.submit(type="submit", class="btn btn-outline-success") }}
+                {{ message }}
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

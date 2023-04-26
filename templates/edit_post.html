@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="edit_jobs_form">
+<form action="" method="post" enctype="multipart/form-data">
+    <link rel="stylesheet" type="text/css" href="{{ css }}">
+    <h1 align="center">Объявление</h1>
+    {{ form.hidden_tag() }}
+    <div class="panel panel-default">
+        {% if post.url_photo != 'None' %}
+        <div id="carouselExampleIndicators" class="carousel slide">
+            <div class="carousel-inner">
+                <div class="carousel-item active" align="center">
+                    <img src="{{ url }}" width="900" height="600" alt="к сожалению, марс не смог загрузиться :(">
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <svg class="bd-placeholder-img card-img-top" width="900" height="600" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Заполнитель: Миниатюра" preserveAspectRatio="xMidYMid slice" focusable="false">
+            <title>Заполнитель</title>
+            <rect width="100%" height="100%" fill="#55595c"></rect>
+            <text x="43%" y="50%" fill="#eceeef" dy=".3em" >Фотографии нет</text>
+        </svg>
+        {% endif %}
+        <br>
+        <div class="form-group">
+            <label>Изменить фотографию</label><br>
+            <label>(можно загружать файлы только с расширением '.png', '.jpg', '.jpeg')</label>
+            <input type="file" class="form-control-file" name="file">
+        </div>
+    </div>
+
+    <hr class="my-3">
+
+    <p>
+        <strong> {{ form.name_post.label }} </strong>
+        {{ form.name_post(class="form-control") }}
+        {% for error in form.name_post.errors %}
+            <p class="alert alert-danger" role="alert">
+                {{ error }}
+            </p>
+        {% endfor %}
+    </p>
+    <p>
+        <strong> {{ form.category.label }} </strong>
+        {{ form.category(class="form-control") }}
+        {% for error in form.category.errors %}
+            <p content="alert alert-danger" role="alert">
+                {{ error }}
+            </p>
+        {% endfor %}
+    </p>
+    <p>
+        <strong> {{ form.price.label }} </strong>
+        {{ form.price(class="form-control") }}
+        {% for error in form.price.errors %}
+            <p content="alert alert-danger" role="alert">
+                {{ error }}
+            </p>
+        {% endfor %}
+    </p>
+    <p>
+        <strong> {{ form.content_post.label }} </strong>
+        {{ form.content_post(class="form-control") }}
+        {% for error in form.content_post.errors %}
+            <p content="alert alert-danger" role="alert">
+                {{ error }}
+            </p>
+        {% endfor %}
+    </p>
+    <p>{{ form.is_hidden() }} {{ form.is_hidden.label }}</p>
+    {{ form.submit(type="submit", class="btn btn-outline-success") }}
+    {{ message }}
+</form>
+</div>
+{% endblock %}
