@@ -17,7 +17,7 @@ class User(SqlAlchemyBase, UserMixin, SerializerMixin):
     city = sqlalchemy.Column(sqlalchemy.String, nullable=True)
     address = sqlalchemy.Column(sqlalchemy.String)
     email = sqlalchemy.Column(sqlalchemy.String, unique=True, nullable=True)
-    number_phone = sqlalchemy.Column(sqlalchemy.String, unique=True, default=None)
+    number_phone = sqlalchemy.Column(sqlalchemy.String, default=' ')
     is_hidden_contact_info = sqlalchemy.Column(sqlalchemy.Boolean, default=True)
     hashed_password = sqlalchemy.Column(sqlalchemy.String, nullable=True)
     modified_date = sqlalchemy.Column(sqlalchemy.DateTime,

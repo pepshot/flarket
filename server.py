@@ -22,13 +22,14 @@ login_manager.init_app(app)
 
 
 @app.errorhandler(404)
-def not_found(_):
-    return make_response(jsonify({'error(404)': 'Not found'}), 404)
+def not_found(error):
+    return render_template('error.html', error=str(error)[0:3])
 
 
 @app.errorhandler(400)
-def bad_request(_):
-    return make_response(jsonify({'error(400)': 'Bad Request'}), 400)
+def bad_request(error):
+    print(error)
+    return render_template('error.html', error=str(error)[0:3])
 
 
 @login_manager.user_loader
@@ -85,39 +86,37 @@ def main_category_id(category_id):
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
-    if not current_user.is_authenticated:
-        form = RegisterForm()
-        css = url_for('static', filename='css/register.css')
-        db_sess = db_session.create_session()
-        list_of_categories = [(category.id, category.name_category) for category in db_sess.query(Category).all()]
-        if request.method == 'POST':
-            if form.password.data != form.password_again.data:
-                return render_template('register.html', title='Регистрация',
-                                       form=form, css=css, list_of_categories=list_of_categories,
-                                       message="Пароли не совпадают")
-            if db_sess.query(User).filter((User.email == form.email.data)).first():
-                return render_template('register.html', title='Регистрация',
-                                       form=form, css=css, list_of_categories=list_of_categories,
-                                       message="Такой пользователь уже есть")
-            user = User(
-                email=form.email.data,
-                number_phone=form.number_phone.data,
-                name=form.name.data,
-                surname=form.surname.data,
-                city=form.city.data,
-                address=form.address.data,
-            )
-            user.set_password(form.password.data)
-            db_sess.add(user)
-            db_sess.commit()
-            shutil.copy('static/img/users/default_avatar.png', f'static/img/users/user_{user.id}.png')
-            user.url_photo = f'/static/img/users/user_{user.id}.png'
-            db_sess.commit()
-            print(f'Зарегистрирован новый пользователь с id {user.id}')
-            return redirect('/login')
-        return render_template('register.html', title='Регистрация', form=form, css=css,
-                               list_of_categories=list_of_categories)
-    abort(404)
+    form = RegisterForm()
+    css = url_for('static', filename='css/register.css')
+    db_sess = db_session.create_session()
+    list_of_categories = [(category.id, category.name_category) for category in db_sess.query(Category).all()]
+    if request.method == 'POST':
+        if form.password.data != form.password_again.data:
+            return render_template('register.html', title='Регистрация',
+                                   form=form, css=css, list_of_categories=list_of_categories,
+                                   message="Пароли не совпадают")
+        if db_sess.query(User).filter(User.email == form.email.data).first():
+            return render_template('register.html', title='Регистрация',
+                                   form=form, css=css, list_of_categories=list_of_categories,
+                                   message="Такой пользователь уже есть")
+        user = User(
+            email=form.email.data,
+            number_phone=form.number_phone.data,
+            name=form.name.data,
+            surname=form.surname.data,
+            city=form.city.data,
+            address=form.address.data,
+        )
+        user.set_password(form.password.data)
+        db_sess.add(user)
+        db_sess.commit()
+        shutil.copy('static/img/users/default_avatar.png', f'static/img/users/user_{user.id}.png')
+        user.url_photo = f'/static/img/users/user_{user.id}.png'
+        db_sess.commit()
+        print(f'Зарегистрирован новый пользователь с id {user.id}')
+        return redirect('/login')
+    return render_template('register.html', title='Регистрация', form=form, css=css,
+                           list_of_categories=list_of_categories)
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -128,7 +127,7 @@ def login():
         db_sess = db_session.create_session()
         list_of_categories = [(category.id, category.name_category) for category in db_sess.query(Category).all()]
         if request.method == 'POST':
-            user = db_sess.query(User).filter((User.email == form.login.data) | (User.number_phone == form.login.data)).first()
+            user = db_sess.query(User).filter(User.email == form.login.data).first()
             if user and user.check_password(form.password.data):
                 login_user(user, remember=form.remember_me.data)
                 print(user, 'зашел в свой аккаунт.')
@@ -197,7 +196,7 @@ def post(post_id):
     if post.user != current_user:
         post.count_views += 1
         db_sess.commit()
-    if post.is_hidden == False:
+    if post.is_hidden == False or post.user == current_user:
         return render_template('post.html', title=f'{post.name_post}',
                            list_of_categories=list_of_categories,
                            post=post, css=css)

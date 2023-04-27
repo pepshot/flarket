@@ -44,7 +44,11 @@
                     <div class="panel-body">
                         <div class="form-group">
                             <p class="card-text">Email: <strong>{{ user.email }}</strong></p>
+                            {% if user.number_phone == ' ' %}
+                            <p class="card-text">Номер телефона: <strong>не указан</strong></p>
+                            {% else %}
                             <p class="card-text">Номер телефона: <strong>{{ user.number_phone }}</strong></p>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
