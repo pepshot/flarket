@@ -32,6 +32,11 @@ def bad_request(error):
     return render_template('error.html', error=str(error)[0:3])
 
 
+@app.errorhandler(500)
+def internal_server_error(error):
+    return render_template('error.html', error=str(error)[0:3])
+
+
 @login_manager.user_loader
 def load_user(user_id):
     db_sess = db_session.create_session()
